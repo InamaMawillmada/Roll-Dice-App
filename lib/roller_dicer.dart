@@ -15,6 +15,7 @@ class _RollerDiceState extends State<RollerDice1> {
   var clickCount2 = 0;
   int total1 = 0;
   int total2 = 0;
+  bool isRoll1Enable = true;
   bool isRoll2Enable = false;
 
   void roll_1() {
@@ -68,33 +69,46 @@ class _RollerDiceState extends State<RollerDice1> {
         const SizedBox(height: 20),
         Row(
           children: [
-            clickCount1 < 5
-                ? TextButton(
-                    onPressed: roll_1,
-                    style: TextButton.styleFrom(
-                      backgroundColor: Color.fromARGB(255, 173, 173, 173),
-                      foregroundColor: Color.fromARGB(255, 0, 0, 0),
-                      textStyle: const TextStyle(fontSize: 25),
-                    ),
-                    child: const Text('Roll Once'),
-                  )
-                : Column(
+            isRoll1Enable
+                ? clickCount1 < 5
+                    ? TextButton(
+                        onPressed: () {
+                          roll_1();
+                          isRoll2Enable = true;
+                          isRoll1Enable = false;
+                        },
+                        style: TextButton.styleFrom(
+                          backgroundColor: Color.fromARGB(255, 173, 173, 173),
+                          foregroundColor: Color.fromARGB(255, 0, 0, 0),
+                          textStyle: const TextStyle(fontSize: 25),
+                        ),
+                        child: const Text('Roll Once'),
+                      )
+                    : Column(
+                        children: [
+                          const Text(
+                            'You have rolled 5 times!',
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          Text(
+                            'Total - $total1',
+                            style: const TextStyle(
+                              fontSize: 15,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ],
+                      )
+                : const Column(
                     children: [
-                      const Text(
-                        'You have rolled 5 times!',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
                       Text(
-                        'Total - $total1',
-                        style: const TextStyle(
-                          fontSize: 15,
-                          color: Colors.white,
-                        ),
-                      ),
+                        "Not Your Turn Yet",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      )
                     ],
                   ),
             const SizedBox(
@@ -103,7 +117,11 @@ class _RollerDiceState extends State<RollerDice1> {
             isRoll2Enable
                 ? clickCount2 < 5
                     ? TextButton(
-                        onPressed: roll_2,
+                        onPressed: () {
+                          roll_2();
+                          isRoll2Enable = false;
+                          isRoll1Enable = true;
+                        },
                         style: TextButton.styleFrom(
                           backgroundColor: Color.fromARGB(255, 173, 173, 173),
                           foregroundColor: Color.fromARGB(255, 0, 0, 0),
